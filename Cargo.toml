@@ -1,0 +1,48 @@
+# Contact-form plugin for the Accent CMS component runtime.
+#
+# Built with `cargo-component`, which compiles this crate to a WebAssembly
+# Component-Model component implementing the `host-services-route-plugin`
+# world from the Accent plugin WIT contract (`wit/`): a content hook that
+# injects a CSRF token on render, a POST /contact-submit route handler, and
+# mail delivery through the typed `host-services` capability (granted
+# structurally because the world imports `host-services`, and per-service by
+# the manifest's `host_services = ["mail"]`). The plugin has no network
+# capability at all -- the former outbound-HTTP call to the host's own
+# `/_internal/smtp/send` bridge is retired.
+#
+# An empty `[workspace]` detaches the plugin from the parent Cargo workspace so
+# its toolchain and lockfile stay independent.
+[workspace]
+
+[package]
+name = "accent-contact"
+version = "0.1.0"
+edition = "2021"
+description = "Contact form plugin for Accent CMS with CSRF and SMTP notification"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Runtime support for the bindings cargo-component generates from `wit/`. The
+# typed records (content-input, request/response, mail) replace the
+# hand-written JSON envelope structs the Extism version carried; since the
+# host-services port there is no JSON body left to build, so the serde
+# dependencies are gone too.
+wit-bindgen-rt = { version = "0.44.0", features = ["bitflags"] }
+
+# Selects which WIT world this component implements.
+[package.metadata.component]
+package = "accent:plugin"
+
+[package.metadata.component.target]
+path = "wit"
+world = "host-services-route-plugin"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

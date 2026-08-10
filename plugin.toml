@@ -1,0 +1,29 @@
+[plugin]
+name = "accent-contact"
+version = "0.1.0"
+api_version = "0.1.0"
+description = "Contact form with CSRF protection and SMTP notification"
+requires_fs = false
+# Mail goes through the typed host-services capability; no outbound-HTTP
+# allowlist (and no loopback bridge) is needed any more.
+host_services = ["mail"]
+
+[hooks]
+on_render = true
+
+[routes]
+"/contact-submit" = "POST"
+
+# Island components provided by this plugin (Feature f101c demo).
+#
+# These live here, in the artifact's own manifest, and not in the copy staged
+# into site-dev/: a packaged plugin carries exactly this file and this
+# assets/ directory, so a declaration the source tree does not have is one the
+# published artifact does not have either (m053 §4.1, §14).
+[islands.word-count]
+js = "assets/word-count.js"
+default_hydrate = "idle"
+
+[islands.reading-time]
+js = "assets/reading-time.js"
+default_hydrate = "idle"

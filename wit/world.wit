@@ -1,0 +1,24 @@
+// The world this plugin implements.
+//
+// Part of the `accent:plugin` package declared in `types.wit`. A world's
+// imports ARE its capability grant. This contact-form plugin imports the three
+// always-granted host capabilities (`config`, `logging`, `environment`) plus
+// `host-services` -- the typed capability through which the route handler
+// hands submissions to the host's SMTP service (`send-mail`). Note what is
+// absent: `outbound-http`. The plugin no longer talks HTTP to its own host
+// (the legacy `/_internal/smtp/send` bridge), so it carries no network
+// capability at all. It exports both the content hooks (to inject a CSRF
+// token on render) and the route handler (POST /contact-submit).
+//
+// This is the `host-services-route-plugin` world from the full Accent plugin
+// contract (`wit/worlds.wit`); the vendored interface files alongside it
+// (`types.wit`/`host.wit`/`content.wit`/`routes.wit`) are byte-identical to
+// the canonical contract.
+world host-services-route-plugin {
+    import config;
+    import logging;
+    import environment;
+    import host-services;
+    export content-hooks;
+    export routes;
+}
