@@ -5,7 +5,7 @@
  * Demonstrates a plugin-provided island component.
  */
 if (window.AccentIslands) {
-window.AccentIslands.register("word-count", function (el, props) {
+window.AccentIslands.register("accent-contact:word-count", function (el, props) {
     var target = props.target || "article";
     var article = document.querySelector(target);
     if (!article) return;

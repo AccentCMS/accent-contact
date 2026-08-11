@@ -5,7 +5,7 @@
  * Demonstrates a plugin-provided island with visible hydration.
  */
 if (window.AccentIslands) {
-window.AccentIslands.register("reading-time", function (el, props) {
+window.AccentIslands.register("accent-contact:reading-time", function (el, props) {
     var wpm = props.wpm || 200;
     var target = props.target || "article";
     var article = document.querySelector(target);

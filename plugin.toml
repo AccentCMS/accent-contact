@@ -1,6 +1,9 @@
 [plugin]
 name = "accent-contact"
-version = "0.1.0"
+# 0.2.0 renames both islands to the namespaced form (bug b170). A published
+# manifest is immutable, so the fix could not be an edit to 0.1.0: it ships as
+# a new version, which also makes it the worked example of the update path.
+version = "0.2.0"
 api_version = "0.1.0"
 description = "Contact form with CSRF protection and SMTP notification"
 requires_fs = false
@@ -20,10 +23,19 @@ on_render = true
 # into site-dev/: a packaged plugin carries exactly this file and this
 # assets/ directory, so a declaration the source tree does not have is one the
 # published artifact does not have either (m053 §4.1, §14).
-[islands.word-count]
+#
+# Namespaced by the plugin name (bug b170). Island names share one global
+# registry per page and the loader resolves them last-registration-wins, so
+# `word-count` and `reading-time` -- close to the likeliest names a theme author
+# would pick for the same two widgets -- would collide silently, one overwriting
+# the other with no diagnostic. Both `accent package` and the registry's own
+# checks warn on a bare name, and this being the first `official` plugin in the
+# catalog, it is what a third party reads to learn what a well-formed plugin
+# looks like.
+[islands."accent-contact:word-count"]
 js = "assets/word-count.js"
 default_hydrate = "idle"
 
-[islands.reading-time]
+[islands."accent-contact:reading-time"]
 js = "assets/reading-time.js"
 default_hydrate = "idle"

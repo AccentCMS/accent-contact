@@ -16,7 +16,9 @@
 
 [package]
 name = "accent-contact"
-version = "0.1.0"
+# Kept in step with `[plugin] version` in plugin.toml, which is what the
+# packaged manifest carries. b170's island rename ships as 0.2.0.
+version = "0.2.0"
 edition = "2021"
 description = "Contact form plugin for Accent CMS with CSRF and SMTP notification"
 publish = false
